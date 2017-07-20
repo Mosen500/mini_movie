@@ -1,24 +1,14 @@
-var express = require('express');  // 加载express模块
-var app = express(); // 启动Web服务器
+var express = require('express');  
+var app = express(); 
 
-var port = process.env.PORT || 3000; // 设置端口号：3000
+var port = process.env.PORT || 8081; // 设置端口号：8081
 app.listen(port); // 监听 port[3000]端口
 console.log('i_movie start on port' + port);
 
 var path = require('path');
-// 引入path模块的作用：因为页面样式的路径放在了bower_components，告诉express，请求页面里所过来的请求中，如果有请求样式或脚本，都让他们去bower_components中去查找
-
 var mongoose = require('mongoose'); // 加载mongoose模块
-mongoose.connect('mongodb://localhost:27017/imovie'); // 连接mongodb本地数据库imovie
+mongoose.connect('mongodb://localhost:27017/mini_movie'); // 连接mongodb本地数据库mini_movie
 console.log('MongoDB connection success!');
-/*  mongoose 简要知识点补充
-* mongoose模块构建在mongodb之上，提供了Schema[模式]、Model[模型]和Document[文档]对象，用起来更为方便。
-* Schema对象定义文档的结构（类似表结构），可以定义字段和类型、唯一性、索引和验证。
-* Model对象表示集合中的所有文档。
-* Document对象作为集合中的单个文档的表示。
-* mongoose还有Query和Aggregate对象，Query实现查询，Aggregate实现聚合。
-* */
-
 app.locals.moment = require('moment'); // 载入moment模块，格式化日期
 
 var serveStatic = require('serve-static');  // 静态文件处理
@@ -28,7 +18,7 @@ var bodyParser = require('body-parser');
 // 因为后台录入页有提交表单的步骤，故加载此模块方法（bodyParser模块来做文件解析），将表单里的数据进行格式化
 app.use(bodyParser.urlencoded({extended: true}));
 
-var _underscore = require('underscore'); // _.extend用新对象里的字段替换老的字段
+var _underscore = require('underscore'); // _.用新对象里的字段替换老的字段
 
 app.set('views', './views/pages');     // 设置视图默认的文件路径
 app.set('view engine', 'jade');  // 设置视图引擎：jade
@@ -43,7 +33,7 @@ app.get('/', function (req, res) {
             console.log(err);
         }
         res.render('index', {  // 渲染index 首页
-            title: '微电影 首页',
+            title: '微型电影 首页',
             movies: movies
         });
     });
@@ -54,7 +44,7 @@ app.get('/movie/:id', function (req, res) {
     var id = req.params.id;
     movie.findById(id, function (err, movie) {
         res.render('detail', {
-            title: 'i_movie' + movie.title,
+            title: '电影名：' + movie.title,
             movie: movie
         });
     });
@@ -63,7 +53,7 @@ app.get('/movie/:id', function (req, res) {
 // admin page 后台录入页
 app.get('/admin/movie', function (req, res) {
     res.render('admin', {
-        title: 'i_movie 后台录入页',
+        title: '微型电影 后台录入页',
         movie: {
             title: '',
             doctor: '',
@@ -83,7 +73,7 @@ app.get('/admin/update/:id', function (req, res) {
     if (id) {
         movie.findById(id, function (err, movie) {
             res.render('admin', {
-                title: 'imovie 后台更新页',
+                title: '微型电影 后台更新页',
                 movie: movie
             });
         });
@@ -135,7 +125,7 @@ app.get('/admin/list', function (req, res) {
             console.log(err);
         }
         res.render('list', {
-            title: 'i_movie 列表页',
+            title: '微型电影 列表页',
             movies: movies
         });
     });

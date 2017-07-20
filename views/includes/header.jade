@@ -1,9 +1,34 @@
 .container
+  .navbar.navbar-inverse(role="navigation")
+    .container-fluid
+      .navbar-header
+        a.navbar-brand(href="#") 微型电影网
+          ul.nav.navbar-nav
+            li.active
+              a(href="#") 豆瓣
+            li
+              a(href="#") 爱奇艺
+            li.dropdown
+              a.dropdown-toggle(href="#" data-toggle="dropdown") 腾讯视频
+                b.caret
+              ul.dropdown-menu
+                li:a(href="#") 电视剧
+                li.divider
+                li:a(href="#") 电影
+                li.divider
+                li:a(href="#") 纪录片
+                li.divider
+                li:a(href="#") 综艺
+                li.divider
+                li:a(href="#") 动漫
+
+  
+
   .row
     .page-header.clearfix
       h1= title
       .col-md-4
-        .small 重度科幻迷~~~
+        .small 我们都爱看电影
       .col-md-8
         form(method="GET",action="/results")
           .input-group.col-sm-4.pull-right
